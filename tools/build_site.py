@@ -15,14 +15,14 @@ DOCS = ROOT / "docs"
 DIST = WORKSPACE / "dist"
 SRC_HTML = pathlib.Path.home() / "Downloads" / "MEMORY-optimized.html"
 OUT = WORKSPACE / "site"
-VER = "v1.0.10"
+VER = "v1.0.12"
 
 APK_NAME = f"MemboX-{VER}.apk"
 HTML_NAME = f"MemboX-HTML-{VER}.html"
 ZIP_NAME = f"MemboX-Web-PWA-{VER}.zip"
 
-APK_SIZE = "335 KB"
-HTML_SIZE = "475 KB"
+APK_SIZE = "348 KB"
+HTML_SIZE = "509 KB"
 PACKAGE = "com.membo.app"
 
 # --------------------------------------------------------------------------
@@ -391,6 +391,16 @@ DirectoryIndex index.html
     <FilesMatch "\\.(apk|zip)$">
         Header set Content-Disposition "attachment"
     </FilesMatch>
+</IfModule>"""
+
+# 只作用于 downloads/ 目录。根目录那份不能一并处理 html，
+# 否则网站首页 index.html 也会变成"另存为"。
+HTACCESS_DOWNLOADS = """# Membo X 下载目录：HTML 单文件包也走另存为
+# 根目录 .htaccess 只拦 apk/zip，因为 html 全局拦截会把首页一起变成下载
+<IfModule mod_headers.c>
+    <FilesMatch "\\.html$">
+        Header set Content-Disposition "attachment"
+    </FilesMatch>
 </IfModule>
 """
 
@@ -502,7 +512,7 @@ def render(lang: str) -> str:
     <p class="desc">{t['desc_short']}</p>
     <div class="cta">
       <a class="btn primary" href="./app/index.html">{icon('i-play')}{t['cta_online']}</a>
-      <a class="btn" href="./downloads/{APK_NAME}">{icon('i-down')}{t['cta_apk']}</a>
+      <a class="btn" href="./downloads/{APK_NAME}" download="{APK_NAME}">{icon('i-down')}{t['cta_apk']}</a>
     </div>
     <p class="note">{t['hero_note']}</p>
     <img class="hero-shot" src="./screenshots/overview.png" alt="Membo X interface overview">
@@ -528,7 +538,7 @@ def render(lang: str) -> str:
         <h3>{t['dl_apk_t']}</h3><p>{t['dl_apk_d']}</p>
         <p class="meta">{t['meta_ver']}: <code>{VER}</code> · {t['meta_size']}: <code>{APK_SIZE}</code><br>
            {t['meta_pkg']}: <code>{PACKAGE}</code></p>
-        <a class="btn primary" href="./downloads/{APK_NAME}">{icon('i-down')}{t['dl_apk_b']}</a>
+        <a class="btn primary" href="./downloads/{APK_NAME}" download="{APK_NAME}">{icon('i-down')}{t['dl_apk_b']}</a>
       </div>
       <div class="dl">
         <h3>{t['dl_online_t']}</h3><p>{t['dl_online_d']}</p>
@@ -537,11 +547,11 @@ def render(lang: str) -> str:
       <div class="dl">
         <h3>{t['dl_html_t']}</h3><p>{t['dl_html_d']}</p>
         <p class="meta">{t['meta_size']}: <code>{HTML_SIZE}</code></p>
-        <a class="btn" href="./downloads/{HTML_NAME}">{icon('i-down')}{t['dl_html_b']}</a>
+        <a class="btn" href="./downloads/{HTML_NAME}" download="{HTML_NAME}">{icon('i-down')}{t['dl_html_b']}</a>
       </div>
       <div class="dl">
         <h3>{t['dl_zip_t']}</h3><p>{t['dl_zip_d']}</p>
-        <a class="btn" href="./downloads/{ZIP_NAME}">{icon('i-down')}{t['dl_zip_b']}</a>
+        <a class="btn" href="./downloads/{ZIP_NAME}" download="{ZIP_NAME}">{icon('i-down')}{t['dl_zip_b']}</a>
       </div>
     </div>
   </section>
@@ -602,6 +612,9 @@ def build() -> pathlib.Path:
         if not src.exists():
             raise SystemExit(f"缺少发布文件: {src}")
         shutil.copyfile(src, OUT / "downloads" / name)
+
+    # 下载目录单独一份 .htaccess，让 HTML 单文件包也直接下载
+    (OUT / "downloads" / ".htaccess").write_text(HTACCESS_DOWNLOADS, encoding="utf-8")
 
     # 打包：解压后内容直接位于站点根目录
     DIST.mkdir(exist_ok=True)
