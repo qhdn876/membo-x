@@ -1,0 +1,28 @@
+*.iml
+.gradle/
+build/
+local.properties
+.idea/
+.DS_Store
+captures/
+.externalNativeBuild/
+.cxx/
+
+# 签名文件一律不进仓库
+*.jks
+*.keystore
+*.p12
+*.pem
+release.keystore
+release.keystore.*
+
+# Git 推送凭据助手
+.git-askpass.sh
+
+# Python 工具产生的缓存
+__pycache__/
+*.pyc
+_c.js
+
+# 本地测试与截图中间产物
+shots/

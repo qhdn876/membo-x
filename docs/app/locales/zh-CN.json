@@ -1,0 +1,22 @@
+{
+  "locale": "zh-CN",
+  "language": "zh",
+  "name": "Membo X",
+  "shortName": "Membo X",
+  "title": "Membo X · 本地记忆卡片工具",
+  "description": "Membo X 是一款本地优先的记忆卡片工具。支持卡片翻转、左右滑动分类、收藏与打乱，内置 Blast 记忆训练模式。免注册、无网络权限，数据只存本机，卸载即删。",
+  "keywords": [
+    "记忆卡片",
+    "闪卡",
+    "抽认卡",
+    "背诵",
+    "记忆训练",
+    "学习工具",
+    "离线学习",
+    "卡片复习",
+    "Membo X"
+  ],
+  "category": "教育 / 效率",
+  "appName": "Membo X",
+  "entry": "index.html"
+}

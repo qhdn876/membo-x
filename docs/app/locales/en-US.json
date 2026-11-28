@@ -1,0 +1,19 @@
+{
+  "locale": "en-US",
+  "language": "en",
+  "name": "Membo X",
+  "shortName": "Membo X",
+  "title": "Membo X · Offline Memory Cards",
+  "description": "Membo X is a local-first flashcard tool with card flipping, swipe-to-sort, favorites, shuffle, and a Blast memory training mode. No sign-up, no network permission.",
+  "keywords": [
+    "flashcards",
+    "memory cards",
+    "study",
+    "memorization",
+    "offline learning",
+    "Membo X"
+  ],
+  "category": "Education / Productivity",
+  "appName": "Membo X",
+  "entry": "index.html"
+}

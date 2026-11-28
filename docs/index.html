@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Membo X · 本地记忆卡片工具</title>
+<meta name="description" content="Membo X 是一款本地优先的记忆卡片工具。支持卡片翻转、左右滑动分类、收藏与打乱，内置 Blast 记忆训练模式。免注册、无网络权限，数据只存本机。">
+<meta name="keywords" content="记忆卡片,闪卡,抽认卡,背诵,记忆训练,学习工具,离线学习,Membo X">
+<link rel="canonical" href="https://qhdn876.github.io/membo-x/">
+<link rel="icon" href="./app/icon.png">
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #f6f8fb;
+    color: #1b2230;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Microsoft YaHei", sans-serif;
+    line-height: 1.7;
+  }
+  main { max-width: 960px; margin: 0 auto; padding: 56px 22px 72px; }
+  header { text-align: center; }
+  .brand {
+    font-size: 30px; font-weight: 700; letter-spacing: 3px; margin: 0 0 10px;
+  }
+  .brand span { color: #2563eb; }
+  .tag { color: #5b6577; font-size: 16px; margin: 0 0 4px; }
+  .sub { color: #8b93a1; font-size: 13px; margin: 0; }
+  .shot {
+    width: 100%; max-width: 900px; display: block; margin: 34px auto 6px;
+    border-radius: 16px;
+  }
+  .shot-cap { text-align: center; color: #98a1b0; font-size: 13px; margin: 0 0 26px; }
+  .actions {
+    display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 0 0 44px;
+  }
+  .actions a {
+    display: inline-block; padding: 11px 22px; border-radius: 12px;
+    font-size: 15px; font-weight: 600; text-decoration: none;
+    border: 1px solid #dce3ee; background: #fff; color: #243049;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .actions a:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(30,50,90,.10); }
+  .actions a.primary { background: #2563eb; border-color: #2563eb; color: #fff; }
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px;
+  }
+  .card {
+    background: #fff; border: 1px solid #e8edf4; border-radius: 16px; padding: 20px 22px;
+    box-shadow: 0 6px 20px rgba(16,24,40,.035);
+  }
+  .card h2 { font-size: 15px; margin: 0 0 6px; }
+  .card p { font-size: 13.5px; color: #6b7484; margin: 0; }
+  footer {
+    margin-top: 44px; padding-top: 20px; border-top: 1px solid #e6ebf2;
+    text-align: center; font-size: 13px; color: #8b93a1;
+  }
+  a { color: #2563eb; }
+  @media (max-width: 560px) {
+    main { padding: 36px 16px 56px; }
+    .brand { font-size: 25px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <header>
+    <h1 class="brand">Membo <span>X</span></h1>
+    <p class="tag">本地优先的记忆卡片 · 打开就能背，数据只在本机</p>
+    <p class="sub">Offline flashcards · No account · No network permission</p>
+  </header>
+
+  <img class="shot" src="./screenshots/overview.png"
+       alt="Membo X 界面：记忆库、卡片学习、Blast 训练模式">
+  <p class="shot-cap">记忆库 / 卡片翻面 / Blast 记忆训练</p>
+
+  <div class="actions">
+    <a class="primary" href="./app/">在线体验 Web 版</a>
+    <a href="https://github.com/qhdn876/membo-x/releases/latest">下载 Android APK</a>
+    <a href="https://github.com/qhdn876/membo-x">查看源代码</a>
+    <a href="./privacy.html">隐私政策</a>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>卡片翻转 · 滑动分类</h2>
+      <p>点击翻面查看释义，左右滑动标记「不熟悉 / 熟悉」，支持撤回、洗牌与只练错词。</p>
+    </div>
+    <div class="card">
+      <h2>Blast 记忆训练</h2>
+      <p>把词条变成岩体，看题射击击碎，多段血量、分段节奏，换个方式反复过词。</p>
+    </div>
+    <div class="card">
+      <h2>完全离线 · 零权限</h2>
+      <p>不申请任何系统权限，无网络、无广告、无第三方 SDK，安装时不会弹出权限请求。</p>
+    </div>
+    <div class="card">
+      <h2>数据只存本机</h2>
+      <p>学习集、进度与设置保存在应用私有目录，不上传、不同步，卸载即彻底删除。</p>
+    </div>
+  </div>
+
+  <footer>
+    Membo X · com.membo.app · v1.0.11 ·
+    <a href="./privacy.html">隐私政策</a> ·
+    <a href="https://github.com/qhdn876/membo-x">GitHub</a>
+  </footer>
+
+</main>
+</body>
+</html>
