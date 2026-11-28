@@ -6528,7 +6528,16 @@
         }
       });
 
+      let bzCancelGuard = null;
+      const bzClearGuard = () => {
+        if (bzCancelGuard) {
+          clearTimeout(bzCancelGuard);
+          bzCancelGuard = null;
+        }
+      };
+
       const bzEndPress = () => {
+        bzClearGuard();
         if (bzDeckPress) {
           clearTimeout(bzDeckPress.timer);
           bzDeckPress = null;
@@ -6536,7 +6545,32 @@
         if (bzCardDrag) bzEndDrag();
       };
       deckListEl.addEventListener('pointerup', bzEndPress);
-      deckListEl.addEventListener('pointercancel', bzEndPress);
+      // 同主词库：WebView 可能把开始拖动误报成 pointercancel，先等后续触摸事件再说
+      deckListEl.addEventListener('pointercancel', () => {
+        if (bzDeckPress) {
+          clearTimeout(bzDeckPress.timer);
+          bzDeckPress = null;
+        }
+        if (bzCardDrag) {
+          bzClearGuard();
+          bzCancelGuard = setTimeout(() => {
+            bzCancelGuard = null;
+            if (bzCardDrag) bzEndDrag();
+          }, 800);
+        }
+      });
+
+      // 同主词库：拖拽期间拦掉默认滚动，并用触点位置驱动拖拽，避免 WebView 用 pointercancel 终止
+      deckListEl.addEventListener('touchmove', (e) => {
+        if (!bzCardDrag) return;
+        bzClearGuard();
+        if (e.cancelable) e.preventDefault();
+        const t = e.touches && e.touches[0];
+        if (t) bzUpdateDrag(t.clientY);
+      }, { passive: false });
+
+      deckListEl.addEventListener('touchend', bzEndPress);
+      deckListEl.addEventListener('touchcancel', bzEndPress);
 
       document.getElementById('bzBtnOpenDeck').addEventListener('click', openDeckModal);
 
@@ -9159,7 +9193,16 @@
       }
     });
 
+    let dragCancelGuard = null;
+    const clearCancelGuard = () => {
+      if (dragCancelGuard) {
+        clearTimeout(dragCancelGuard);
+        dragCancelGuard = null;
+      }
+    };
+
     const endDeckPress = () => {
+      clearCancelGuard();
       if (deckPress) {
         clearTimeout(deckPress.timer);
         deckPress = null;
@@ -9167,7 +9210,36 @@
       if (cardDrag) endCardDrag();
     };
     $('deckList').addEventListener('pointerup', endDeckPress);
-    $('deckList').addEventListener('pointercancel', endDeckPress);
+    // WebView 常把"开始拖动"误报成 pointercancel，这时不能立刻收场，
+    // 交给 touchend / pointerup；真的没有后续动作时再用定时器兜底
+    $('deckList').addEventListener('pointercancel', () => {
+      if (deckPress) {
+        clearTimeout(deckPress.timer);
+        deckPress = null;
+      }
+      if (cardDrag) {
+        clearCancelGuard();
+        dragCancelGuard = setTimeout(() => {
+          dragCancelGuard = null;
+          if (cardDrag) endCardDrag();
+        }, 800);
+      }
+    });
+
+    // Android WebView 里长按后拖动会被浏览器当成页面滚动，直接甩一个 pointercancel 把拖拽打断，
+    // 表现就是"长按有反应但拖不动"。touch-action 在触摸序列开始后再改已经无效，
+    // 所以这里用非 passive 的 touchmove 拦掉默认滚动，并且直接用触点位置驱动拖拽，
+    // 不把命脉全押在 pointermove 上。
+    $('deckList').addEventListener('touchmove', (e) => {
+      if (!cardDrag) return;
+      clearCancelGuard();
+      if (e.cancelable) e.preventDefault();
+      const t = e.touches && e.touches[0];
+      if (t) updateCardDrag(t.clientY);
+    }, { passive: false });
+
+    $('deckList').addEventListener('touchend', endDeckPress);
+    $('deckList').addEventListener('touchcancel', endDeckPress);
 
     $('deckList').addEventListener('click', (e) => {
       const item = e.target.closest('[data-card]');

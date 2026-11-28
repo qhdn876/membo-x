@@ -10,8 +10,8 @@ android {
         applicationId = "com.membo.app"
         minSdk = 24
         targetSdk = 34
-        versionCode = 12
-        versionName = "1.0.11"
+        versionCode = 13
+        versionName = "1.0.12"
     }
 
     // 通过环境变量注入真实 keystore，仓库里不存放任何私钥
